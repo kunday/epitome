@@ -14,8 +14,8 @@ helpers do
   def render_topic(topic)
 		source = File.read(topic_file(topic))
     @content = markdown(source)
-    # @title, @content = title(@content)
-    # @topic = topic
+    @title, @content = title(@content)
+    @topic = topic
 		erb :article
 	rescue Errno::ENOENT
 		status 404
