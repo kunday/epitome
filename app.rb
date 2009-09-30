@@ -7,21 +7,21 @@ get '/' do
 end
 
 get '/blog/:article' do
-  render_topic(params[:article])
+  render_topic params[:article]
 end
 
 helpers do
   def render_topic(topic)
 		source = File.read(topic_file(topic))
     @content = markdown(source)
-    @title, @content = title(@content)
-    @topic = topic
-		erb :topic
+    # @title, @content = title(@content)
+    # @topic = topic
+		erb :article
 	rescue Errno::ENOENT
 		status 404
 	end
 	def markdown(source)
-		RDiscount.new(notes(source), :smart).to_html
+		RDiscount.new(source, :smart).to_html
 	end
   def title(content)
       title = "Yipee, you found something new!"
@@ -35,7 +35,7 @@ helpers do
     if topic.include?('/')
       topic
     else
-      "#{options.root}/blog/#{topic}.markdown"
+      "#{options.root}/articles/#{topic}.markdown"
     end
   end
 end
