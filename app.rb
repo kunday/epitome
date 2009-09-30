@@ -10,6 +10,10 @@ get '/blog/:article' do
   render_topic params[:article]
 end
 
+get "*" do
+  erb :not_found
+end
+
 helpers do
   def render_topic(topic)
 		source = File.read(topic_file(topic))
@@ -19,6 +23,7 @@ helpers do
 		erb :article
 	rescue Errno::ENOENT
 		status 404
+		erb :not_found
 	end
 	def markdown(source)
 		RDiscount.new(source, :smart).to_html
